@@ -1,0 +1,9 @@
+export const ADD_DEBATE = 'ADD_DEBATE';
+export const ADD_NOMBRE = 'ADD_NOMBRE';
+export const ADD_DATES = 'ADD_DATES';
+export const ADD_CANDIDATOS = 'ADD_CANDIDATOS';
+export const ADD_ACCOUNTS = 'ADD_ACCOUNTS';
+export const ADD_CONTRACT = 'ADD_CONTRACT';
+export const ADD_VOTACION = 'ADD_VOTACION';
+export const ADD_VOTO = 'ADD_VOTO';
+export const ADD_Web3 = 'ADD_Web3';
