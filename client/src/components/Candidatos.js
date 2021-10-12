@@ -27,16 +27,16 @@ const useStyles = makeStyles({
 });
 
 export default function () {
-  const [list, setList] = React.useState(initList);
+ 
   const [name, setName] = React.useState('');
   const classes = useStyles();
 
   function handleAdd() {
-    list.push({ name });
-
-    setList(list);
+    initList.push(name);
     setName('');
-    add_Candidato(list);
+/**    setList(list);
+   **/
+    add_Candidato(initList);
   }
   const dispatch = useDispatch();
   const add_Candidato = (candidato) => dispatch(addCandidato(candidato));
@@ -55,9 +55,9 @@ export default function () {
         <AddIcon></AddIcon>Añadir
       </Button>
       <ul>
-        {list.map((item) => (
+        {initList.map((item) => (
           <Card className={classes.root} key={item.id}>
-            {item.name}
+            {item}
           </Card>
         ))}
       </ul>

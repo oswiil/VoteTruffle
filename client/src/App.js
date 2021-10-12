@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NewVotePage from './pages/NewVotePage';
 import Home from './pages/Home';
 import JoinVote from './pages/JoinVotePage';
+import CargarWeb3Entrada from './components/CargarWeb3Entrada';
 
 const Title = 'Bienvenido';
 

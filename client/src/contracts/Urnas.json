@@ -12,7 +12,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -41,7 +42,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -80,7 +82,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -117,7 +120,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -146,7 +150,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -190,7 +195,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -203,7 +209,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"chairperson\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"name\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"candidatos\",\"type\":\"bytes32[]\"}],\"name\":\"crearVotacion\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"nombreVotacion\",\"type\":\"bytes32\"}],\"name\":\"getCandidatos\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"opciones\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"votacion\",\"type\":\"uint256\"}],\"name\":\"getVotacion\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"nombreVotacion\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"},{\"internalType\":\"bytes32[]\",\"name\":\"candidatos\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"votante\",\"type\":\"address\"}],\"name\":\"giveRightToVote\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"votaciones\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"name\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"votantes\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"addres\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"voted\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"weight\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"vote\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"option\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"votacion\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"opcion\",\"type\":\"uint256\"}],\"name\":\"vote\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"winnerName\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"winnerName_\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"winningProposal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"winningProposal_\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Implements voting process along with vote delegation\",\"kind\":\"dev\",\"methods\":{\"crearVotacion(bytes32,bytes32[])\":{\"details\":\"Return the list of options of the porposal.\",\"params\":{\"candidatos\":\"name of porposal\",\"name\":\"name of porposal\"}},\"getCandidatos(bytes32)\":{\"details\":\"Return the list of options of the porposal.\",\"params\":{\"nombreVotacion\":\"address of voter\"}},\"getVotacion(uint256)\":{\"details\":\"Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.\",\"params\":{\"votacion\":\"address of voter\"}},\"giveRightToVote(address)\":{\"details\":\"Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.\",\"params\":{\"votante\":\"address of voter\"}},\"vote(uint256,uint256)\":{\"details\":\"Give your vote (including votes delegated to you) to proposal 'proposals[proposal].name'.\",\"params\":{\"votacion\":\"index of proposal in the proposals array\"}},\"winnerName()\":{\"details\":\"Calls winningProposal() function to get the index of the winner contained in the proposals array and then\",\"returns\":{\"winnerName_\":\"the name of the winner\"}},\"winningProposal()\":{\"details\":\"Computes the winning proposal taking all previous votes into account.\",\"returns\":{\"winningProposal_\":\"index of winning proposal in the proposals array\"}}},\"title\":\"Urnas\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/oswill/Documentos/reactApp/contracts/Urnas.sol\":\"Urnas\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/oswill/Documentos/reactApp/contracts/Urnas.sol\":{\"keccak256\":\"0xdf8b3ea347a3f4100048cfb81b13b8dccbc83bbf2a2dc9c664abbe4107f7ed26\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://48ff4eed6453c72ba5bcdfaa811a5177099cebef0cc693a1e97eb2b0f0e77ba3\",\"dweb:/ipfs/QmbaEQ1Ndw2VHUN4aKjE4VTQrReJmLVWTdTy6tgv4cAwjE\"]}},\"version\":1}",
@@ -8650,7 +8657,8 @@
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-06-21T21:54:11.892Z",
+  "updatedAt": "2021-06-22T19:37:41.466Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Implements voting process along with vote delegation",
     "kind": "dev",

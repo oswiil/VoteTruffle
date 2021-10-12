@@ -120,6 +120,7 @@ export default function Steps() {
   const add_Votacion = (votacion) => dispatch(addVotacion(votacion));
 
   const handleClick = async () => {
+ 
     /**votacion = [nombre, votecount, select, selectDebate];
     if (!list.filter(nombre).length > 0) list.push({ votacion });**/
 

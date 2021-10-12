@@ -6,6 +6,7 @@ import {
   ADD_CONTRACT,
   ADD_ACCOUNTS,
   ADD_VOTACION,
+  ADD_Web3,
 } from './types';
 
 export const addDebate = (debate) => ({ type: ADD_DEBATE, data: debate });
@@ -28,5 +29,11 @@ export const addVotacion = (votacion) => {
   return {
     type: ADD_VOTACION,
     data: votacion,
+  };
+};
+export const addWeb3 = (web3) => {
+  return {
+    type: ADD_Web3,
+    data: web3,
   };
 };

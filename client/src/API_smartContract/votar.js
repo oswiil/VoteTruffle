@@ -1,4 +1,4 @@
-import { init } from '../API_smartContract/contractConstRequirement';
+import { init } from './contractConstRequirement';
 
 /**
  *
@@ -7,17 +7,16 @@ import { init } from '../API_smartContract/contractConstRequirement';
  */
 export async function crearVotacio(nombre, candidatos) {
   const { web3, contract, accounts } = await init();
+  const arrayHashCandidatos = candidatos.forEach((element) => {
+    web3.utils.asciiToHex(element);
+  });
+
   console.log(accounts[0].toString());
+  alert(arrayHashCandidatos);
   alert('se ha llamado a la funcion');
   await contract.methods
-    .crearVotacion(
-      web3.utils.asciiToHex(nombre),
-      web3.utils.asciiToHex(candidatos)
-    )
-    .send({ from: accounts[0] })
-    .then(function (receipt) {
-      // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
-    });
+    .crearVotacion(web3.utils.asciiToHex(nombre), arrayHashCandidatos)
+    .send({ from: accounts[0] });
 }
 
 export async function getVotacion() {
