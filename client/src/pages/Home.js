@@ -1,11 +1,10 @@
 import React from 'react';
 import '../App.css';
+import PersistentDrawerLeft from '../components/Appbar';
 
-import CargarWeb3Entrada from '../components/CargarWeb3Entrada';
 const Home = ({ children }) => (
   <>
-    {' '}
-    <div className="children">{children}</div> {CargarWeb3Entrada}
+    <div className="children">{children}</div>
   </>
 );
 export default Home;

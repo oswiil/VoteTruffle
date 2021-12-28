@@ -5,11 +5,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NewVotePage from './pages/NewVotePage';
 import Home from './pages/Home';
 import JoinVote from './pages/JoinVotePage';
-import CargarWeb3Entrada from './components/CargarWeb3Entrada';
-
-const Title = 'Bienvenido';
-
-export default () => {
+// import './styles.css';
+import MarkEmailReadIcon from '@material-ui/icons/MarkunreadMailbox';
+const Title = 'Ethereum Web Polls';
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+export default (theme) => {
   return (
     <div>
       <BrowserRouter>
@@ -18,12 +20,23 @@ export default () => {
             exact
             path="/"
             render={() => (
-              <div>
-                <h1>{Title}</h1>
-                <Layout>
-                  <Home SetTitle />
-                </Layout>
-              </div>
+              <figure class="md:flex bg-gray-100 rounded-xl p-8 md:p-0">
+                <div class="pt-6 md:p-8 text-center md:text-left space-y-4">
+                  <Layout>
+                    <Home SetTitle />
+                    <figcaption>
+                      <h1>
+                        {Title} <MarkEmailReadIcon></MarkEmailReadIcon>
+                      </h1>
+                    </figcaption>
+                    <p>
+                      In order to use the service you have to make sure{' '}
+                      <a href="">Metamamask Extension</a> is installed in your
+                      browser.
+                    </p>
+                  </Layout>
+                </div>
+              </figure>
             )}
           />
           <Route

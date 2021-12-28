@@ -1,5 +1,5 @@
 //MATERIAL UI
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -7,20 +7,18 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import MaterialUIPickers from './DatePicker';
 
+import Spinner from './Spinner';
+import MaterialUIPickers from './DatePicker';
 //COMPONENTES
 import InsertarCandidato from './Candidatos';
 import Debate from './Debate';
 import NombreVotacion from './NombreVotacion';
 
 //REDUX
-import { useDispatch, useSelector } from 'react-redux';
-
-import { addVotacion } from '../redux/actions';
+import { useSelector } from 'react-redux';
 
 import { selectDebate } from '../selectors';
 
@@ -54,16 +52,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const useStyles1 = makeStyles({
-  root: {
-    maxWidth: 345,
-    alignContent: 1,
-  },
-  media: {
-    height: 140,
-  },
-});
-
 function getSteps() {
   return [
     'Nombre de la votación',
@@ -72,7 +60,6 @@ function getSteps() {
     'Opciones',
   ];
 }
-
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
@@ -92,17 +79,19 @@ export default function Steps() {
   const [list, setList] = React.useState(votacion);
 
   const classes = useStyles();
-  const classes1 = useStyles1();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
   //PARA MOSTRAR DATOS DE VOTACIÓN CON HOOKS
   const nombre = useSelector((state) => state.name);
+
   const fecha = useSelector((state) => state.dates);
   const candidatos = useSelector((state) => state.candidatos);
+
+  const [loading, setLoading] = useState(false);
+
   votacion = useSelector((state) => state.votacion);
 
-  const dispatch = useDispatch();
   const handleNext = () => {
     if (activeStep !== 4) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -117,20 +106,17 @@ export default function Steps() {
   const handleReset = () => {
     setActiveStep(0);
   };
-  const add_Votacion = (votacion) => dispatch(addVotacion(votacion));
 
-  const handleClick = async () => {
- 
+  const handleClick = async (candidatos) => {
     /**votacion = [nombre, votecount, select, selectDebate];
     if (!list.filter(nombre).length > 0) list.push({ votacion });**/
 
     setList(list);
     //setName('');
-    add_Votacion(list);
+    setLoading(true);
     await crearVotacio(nombre, candidatos);
-    console.log('crear votacion');
+    setLoading(false);
   };
-
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -140,6 +126,7 @@ export default function Steps() {
           </Step>
         ))}
       </Stepper>
+      {loading && <Spinner />}
       <>
         {activeStep === steps.length ? (
           <>
@@ -147,7 +134,7 @@ export default function Steps() {
               Todos los pasos completados
             </Typography>
 
-            <Card className={classes1.root} variant="outlined">
+            <Card variant="outlined">
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -163,17 +150,18 @@ export default function Steps() {
                 <Typography>{selectDebate}</Typography>
                 Candidatos
                 {candidatos.map((item) => (
-                  <CardActionArea className={classes1.root} key={item.id}>
-                    <CardContent>{item.name}</CardContent>
+                  <CardActionArea key={item.id}>
+                    <CardContent>{item}</CardContent>
                   </CardActionArea>
                 ))}
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
 
-            <Button variant="contained" color="primary" onClick={handleClick}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleClick(candidatos)}
+            >
               Enviar votación
             </Button>
             <Button onClick={handleReset}>Reset</Button>

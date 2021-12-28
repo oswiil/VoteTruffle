@@ -1,10 +1,11 @@
 import React from 'react';
 
-import Menu from './Menu.js';
+import MiniDrawer from './Appbar';
 
 const Layout = ({ children }) => (
   <div>
-    <Menu />
+    <MiniDrawer />
+
     {children}
   </div>
 );

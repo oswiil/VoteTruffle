@@ -1,31 +1,33 @@
 import React from 'react';
-
+import Card from '@material-ui/core/Card';
 import Radio from '@material-ui/core/Radio';
 import Candidatos from './Candidatos';
-
+import { useDispatch, useSelector } from 'react-redux';
 import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { getVotacion } from '../API_smartContract/votar';
 
-export default function Vote() {
-  const [selectedValue, setSelectedValue] = React.useState('a');
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
+export default async function Vote() {
+  // const [selectedValue, setSelectedValue] = React.useState('a');
+  // const candidatos = useSelector((state) => state.candidatos);
+  const candidatos = await getVotacion();
+  console.log('candidatos', candidatos);
+  // const handleChange = (event) => {
+  //   setSelectedValue(event.target.value);
+  // };
 
   return (
-    <Radio
-      checked={selectedValue === 'a'}
-      onChange={handleChange}
-      value="a"
-      name="radio-button-demo"
-      inputProps={{ 'aria-label': 'A' }}
-    >
-      {Candidatos.map((item) => (
-        <CardActionArea key={item.id}>
-          <CardContent>{item.name}</CardContent>
-        </CardActionArea>
-      ))}
-    </Radio>
+    <></>
+    /**
+    <Card>
+      <CardContent>
+        {candidatos.map((item) => (
+          <CardActionArea key={item.id}>
+            <CardContent>{item}</CardContent>
+          </CardActionArea>
+        ))}
+      </CardContent>
+    </Card>
+    */
   );
 }

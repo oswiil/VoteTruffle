@@ -12,6 +12,7 @@ const initList = [];
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
+    p: 20,
   },
   bullet: {
     display: 'inline-block',
@@ -27,15 +28,12 @@ const useStyles = makeStyles({
 });
 
 export default function () {
- 
   const [name, setName] = React.useState('');
   const classes = useStyles();
 
   function handleAdd() {
     initList.push(name);
     setName('');
-/**    setList(list);
-   **/
     add_Candidato(initList);
   }
   const dispatch = useDispatch();

@@ -7,21 +7,24 @@ pragma experimental ABIEncoderV2;
  * @dev Implements voting process along with vote delegation
  */
 contract Urnas {
+    struct Voto {
+        address id_Votante; // address candidato
+        bytes32 id_Votacion; // hash votacion
+        int32 weigth; // candidato elegido
+    }
+
     struct Votante {
-        address addres;
-        bool voted; // if true, that person already voted
-        uint256 weight;
-        uint256 vote; // index of the voted proposal
-        uint256 option; //index of candidate choosen
+        address addres; // adress wallet
+        bytes32[] voted; // id de votacion + if true, that person already voted
+        uint256 weight; // vote value
     }
 
     struct Votacion {
         // If you can limit the length to a certain number of bytes,
         // always use one of bytes1 to bytes32 because they are much cheaper
-        bytes32 id; //
+        bytes32 id; // hash
         bytes32 name; // short name (up to 32 bytes)
-        uint256 voteCount; // number of accumulated votes
-        bytes32[] candidatos;
+        bytes32[] candidatos; // Array de int
     }
 
     address public chairperson;
@@ -34,8 +37,6 @@ contract Urnas {
      * @param candidatos name of porposal
      */
     function crearVotacion(bytes32 name, bytes32[] memory candidatos) public {
-        uint256 voteCount;
-
         chairperson = msg.sender;
         bytes32 id_ = bytes32(keccak256(abi.encodePacked(msg.sender)));
 
@@ -45,12 +46,7 @@ contract Urnas {
         // appends it to the end of 'proposals'.
         for (uint256 i = 0; i < votaciones.length; i++) {
             votaciones.push(
-                Votacion({
-                    id: id_,
-                    name: name,
-                    voteCount: 0,
-                    candidatos: candidatos
-                })
+                Votacion({id: id_, name: name, candidatos: candidatos})
             );
         }
     }
@@ -74,75 +70,74 @@ contract Urnas {
 
     /**
      * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
-     * @param votacion address of voter
+     * @param candidatos data de la votacion
      */
-    function getVotacion(uint256 votacion)
+    function getVotacion(bytes32 votacionHash)
         public
         view
-        returns (
-            bytes32 nombreVotacion,
-            uint256 voteCount,
-            bytes32[] memory candidatos
-        )
+        returns (bytes32[] memory candidatos)
     {
-        nombreVotacion = votaciones[votacion].name;
-        voteCount = votaciones[votacion].voteCount;
-        candidatos = votaciones[votacion].candidatos;
+        for (uint256 i = 0; i < votaciones.length; i++) {
+            if (votaciones[i].id == votacionHash) {
+                Votacion storage sender = votaciones[i];
 
-        return (nombreVotacion, voteCount, candidatos);
-    }
-
-    /**
-     * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
-     * @param votante address of voter
-     */
-    function giveRightToVote(address votante) public {
-        require(
-            msg.sender == chairperson,
-            "Only chairperson can give right to vote."
-        );
-        require(!votantes[votante].voted, "The voter already voted.");
-        require(votantes[votante].weight == 0);
-        votantes[votante].weight = 1;
-    }
-
-    /**
-     * @dev Give your vote (including votes delegated to you) to proposal 'proposals[proposal].name'.
-     * @param votacion index of proposal in the proposals array
-     */
-
-    function vote(uint256 votacion, uint256 opcion) public {
-        Votante storage sender = votantes[msg.sender];
-        require(sender.weight != 0, "No tienes permiso para votar.");
-        require(!sender.voted, "Ya has votado.");
-        sender.voted = true;
-        sender.vote = votacion;
-        sender.option = opcion;
-        // If 'proposal' is out of the range of the array,
-        // this will throw automatically and revert all
-        // changes.
-        votaciones[votacion].voteCount += sender.weight;
-    }
-
-    /**
-     * @dev Computes the winning proposal taking all previous votes into account.
-     * @return winningProposal_ index of winning proposal in the proposals array
-     */
-    function winningProposal() public view returns (uint256 winningProposal_) {
-        uint256 winningVoteCount = 0;
-        for (uint256 v = 0; v < votaciones.length; v++) {
-            if (votaciones[v].voteCount > winningVoteCount) {
-                winningVoteCount = votaciones[v].voteCount;
-                winningProposal_ = v;
+                candidatos = sender.candidatos;
             }
         }
+
+        return (candidatos);
     }
 
-    /**
-     * @dev Calls winningProposal() function to get the index of the winner contained in the proposals array and then
-     * @return winnerName_ the name of the winner
-     */
-    function winnerName() public view returns (bytes32 winnerName_) {
-        winnerName_ = votaciones[winningProposal()].name;
-    }
+    // /**
+    //  * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
+    //  * @param votante address of voter
+    //  */
+    // function giveRightToVote(address votante) public {
+    //     require(
+    //         msg.sender == chairperson,
+    //         "Only chairperson can give right to vote."
+    //     );
+    //     require(!votantes[votante].voted, "The voter already voted.");
+    //     require(votantes[votante].weight == 0);
+    //     votantes[votante].weight = 1;
+    // }
+
+    // /**
+    //  * @dev Give your vote (including votes delegated to you) to proposal 'proposals[proposal].name'.
+    //  * @param votacion index of proposal in the proposals array
+    //  */
+
+    // function vote(bytes32[] calldata votacion, uint256 weight) public {
+    //     Votante storage sender = votantes[msg.sender];
+    //     require(sender.weight != 0, "No tienes permiso para votar.");
+
+    //     sender.Votacion[1] = votacion;
+    //     sender.weight = weight;
+    //     // If 'proposal' is out of the range of the array,
+    //     // this will throw automatically and revert all
+    //     // changes.
+    //     votaciones[votacion].voteCount += sender.weight;
+    // }
+
+    // /**
+    //  * @dev Computes the winning proposal taking all previous votes into account.
+    //  * @return winningProposal_ index of winning proposal in the proposals array
+    //  */
+    // function winningProposal() public view returns (uint256 winningProposal_) {
+    //     uint256 winningVoteCount = 0;
+    //     for (uint256 v = 0; v < votaciones.length; v++) {
+    //         if (votaciones[v].voteCount > winningVoteCount) {
+    //             winningVoteCount = votaciones[v].voteCount;
+    //             winningProposal_ = v;
+    //         }
+    //     }
+    // }
+
+    // /**
+    //  * @dev Calls winningProposal() function to get the index of the winner contained in the proposals array and then
+    //  * @return winnerName_ the name of the winner
+    //  */
+    // function winnerName() public view returns (bytes32 winnerName_) {
+    //     winnerName_ = votaciones[winningProposal()].name;
+    // }
 }

@@ -1,3 +1,4 @@
+import BasicModal from '../components/MetamaskDialog';
 import { init } from './contractConstRequirement';
 
 /**
@@ -7,13 +8,13 @@ import { init } from './contractConstRequirement';
  */
 export async function crearVotacio(nombre, candidatos) {
   const { web3, contract, accounts } = await init();
-  const arrayHashCandidatos = candidatos.forEach((element) => {
-    web3.utils.asciiToHex(element);
+  const arrayHashCandidatos = [];
+  candidatos.forEach((element) => {
+    arrayHashCandidatos.push(web3.utils.asciiToHex(element));
+    console.log(accounts[0].toString());
+    console.log(element);
   });
 
-  console.log(accounts[0].toString());
-  alert(arrayHashCandidatos);
-  alert('se ha llamado a la funcion');
   await contract.methods
     .crearVotacion(web3.utils.asciiToHex(nombre), arrayHashCandidatos)
     .send({ from: accounts[0] });
