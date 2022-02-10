@@ -51,21 +51,8 @@ contract Urnas {
         }
     }
 
-    /**
-     * @dev Return the list of options of the porposal.
-     * @param nombreVotacion address of voter
-     */
-    function getCandidatos(bytes32 nombreVotacion)
-        public
-        view
-        returns (bytes32[] memory opciones)
-    {
-        for (uint256 i = 0; i < votaciones.length; i++) {
-            if (votaciones[i].name == nombreVotacion) {
-                Votacion storage sender = votaciones[i];
-                opciones = sender.candidatos;
-            }
-        }
+    function getData() external view returns (Votacion[] memory) {
+        return votaciones;
     }
 
     /**

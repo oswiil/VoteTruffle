@@ -24,6 +24,7 @@ export default (theme) => {
                 <div class="pt-6 md:p-8 text-center md:text-left space-y-4">
                   <Layout>
                     <Home SetTitle />
+
                     <figcaption>
                       <h1>
                         {Title} <MarkEmailReadIcon></MarkEmailReadIcon>

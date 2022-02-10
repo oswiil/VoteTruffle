@@ -7,8 +7,7 @@ module.exports = {
   networks: {
     develop: {
       port: 8545,
-      defaultEtherBalance: 500,
-      blockTime: 3,
+      defaultEtherBalance: 500000,
     },
   },
   compilers: {
