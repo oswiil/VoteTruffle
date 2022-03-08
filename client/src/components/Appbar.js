@@ -22,6 +22,7 @@ import { init } from '../API_smartContract/contractConstRequirement';
 import { Button, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { addAccounts } from '../redux/actions';
+import Web3 from 'web3';
 const useStyles = makeStyles({
   connect: {
     marginLeft: 'auto',
@@ -116,16 +117,12 @@ export default function MiniDrawer() {
   const dispatch = useDispatch();
   const initWeb3 = async () => {
     try {
-      setLoading(true);
-      const { web3, contract, accounts } = await init();
-      dispatch(addAccounts(accounts));
-      setLoading(false);
-      if (accounts.length > 0) {
-        setIsConected(true);
-        Promise.resolve(!isConected).then(() => initWeb3);
-      }
+      const web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+
+      Promise.resolve().then(() => initWeb3);
     } catch (e) {
-      setLoading(false);
+      console.log('iu');
     }
   };
   return (

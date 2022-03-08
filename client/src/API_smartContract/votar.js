@@ -1,6 +1,9 @@
+import { useDispatch } from 'react-redux';
 import BasicModal from '../components/MetamaskDialog';
+import { addVotacion } from '../redux/actions';
 import { init } from './contractConstRequirement';
-
+import React from 'react';
+import { TextField } from '@material-ui/core';
 /**
  *
  * @param {*} nombre
@@ -21,18 +24,27 @@ export async function crearVotacio(nombre, candidatos) {
       from: accounts[0],
       gasPrice: '21000000000',
       gas: 210000,
-      chainId: 1,
+      chainId: 1337,
       networkId: 1,
     });
 }
 
-export async function getData() {
+export async function getVotaciones() {
   const { contract, accounts } = await init();
-  return await contract.methods.getData().send({
+  console.log(
+    '🚀 ~ file: votar.js ~ line 34 ~ getVotaciones ~ contract',
+    contract
+  );
+  console.log(
+    '🚀 ~ file: votar.js ~ line 34 ~ getVotaciones ~ accounts',
+    accounts
+  );
+
+  return await contract.methods.showAllVotaciones().call({
     from: accounts[0],
     gasPrice: '21000000000',
     gas: 2100000,
-    chainId: 1,
+    chainId: 1337,
     networkId: 1,
   });
 }

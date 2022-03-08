@@ -2,14 +2,13 @@ import React from 'react';
 
 import '../App.css';
 import InsertLink from '../components/insertLink';
-import Vote from '../components/Vote';
+import { RenderVotes } from '../components/Vote';
 const JoinVote = ({ children }) => (
   <div>
     <div className="children">
-      <InsertLink />
-
-      <Vote />
       {children}
+      <InsertLink />
+      <RenderVotes />
     </div>
   </div>
 );

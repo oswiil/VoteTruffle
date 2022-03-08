@@ -1,30 +1,47 @@
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import Radio from '@material-ui/core/Radio';
-import Candidatos from './Candidatos';
-import { useDispatch, useSelector } from 'react-redux';
-import CardContent from '@material-ui/core/CardContent';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import { getData } from '../API_smartContract/votar';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { getVotaciones } from '../API_smartContract/votar';
 
-export default async function Vote() {
-  // const [selectedValue, setSelectedValue] = React.useState('a');
+// import { getVotaciones } from '../API_smartContract/votar';
+// const candidatos = await getVotaciones();
+// console.log("🚀 ~ file: Vote.js ~ line 6 ~ candidatos", candidatos)
+// componentDidMount();
+// {
+//   this.RenderVotes();
+// }
+
+export const RenderVotes = () => {
+  // try {
+
+  // this will re render the view with new data
+  // this.setState({
+  //   Votes: _candidatos,
+  // });0
+  // } catch (err) {
+  //   console.log('🚀 ~ file: Vote.js ~ line 13 ~ RenderVotes ~ err', err);
+  // }
   // const candidatos = useSelector((state) => state.candidatos);
-  const candidatos = await getData();
-  console.log('candidatos', candidatos);
   // const handleChange = (event) => {
   //   setSelectedValue(event.target.value);
   // };
 
-  return (
-    <Card>
-      <CardContent>
-        {candidatos.map((item) => (
-          <CardActionArea key={item.id}>
-            <CardContent>{item}</CardContent>
-          </CardActionArea>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
+  const [votaciones, setVotaciones] = React.useState([]);
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const _candidatos = await getVotaciones();
+
+        console.log(
+          '🚀 ~ file: Vote.js ~ line 30 ~ RenderVotes ~ votaciones',
+          _candidatos
+        );
+        setVotaciones(_candidatos);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, []);
+
+  return <>{votaciones}</>;
+};
