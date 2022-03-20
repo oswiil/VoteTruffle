@@ -24,18 +24,15 @@ export const RenderVotes = () => {
   // const handleChange = (event) => {
   //   setSelectedValue(event.target.value);
   // };
-
+  const _candidatos = {};
   const [votaciones, setVotaciones] = React.useState([]);
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const _candidatos = await getVotaciones();
-
-        console.log(
-          '🚀 ~ file: Vote.js ~ line 30 ~ RenderVotes ~ votaciones',
-          _candidatos
-        );
-        setVotaciones(_candidatos);
+        _candidatos = await getVotaciones();
+        if (_candidatos.length != 0) {
+          setVotaciones(_candidatos);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -43,5 +40,15 @@ export const RenderVotes = () => {
     fetchData();
   }, []);
 
-  return <>{votaciones}</>;
+  console.log(
+    '🚀 ~ file: Vote.js ~ line 29 ~ RenderVotes ~ votaciones',
+    votaciones
+  );
+  return (
+    <div>
+      {votaciones.map((votacion) => (
+        <div>{votacion}</div>
+      ))}
+    </div>
+  );
 };
