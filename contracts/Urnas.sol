@@ -22,13 +22,14 @@ contract Urnas {
     struct Votacion {
         // If you can limit the length to a certain number of bytes,
         // always use one of bytes1 to bytes32 because they are much cheaper
-        bytes32 id; // hash
+        uint256 id; // hash
         bytes32 name; // short name (up to 32 bytes)
         bytes32[] candidatos; // Array de int
     }
 
     address public chairperson;
     mapping(address => Votante) public votantes;
+    mapping(uint256 => Votacion) votacionById;
     Votacion[] public votaciones;
 
     /**
@@ -38,42 +39,58 @@ contract Urnas {
      */
     function crearVotacion(bytes32 name, bytes32[] memory candidatos) public {
         chairperson = msg.sender;
-        bytes32 id_ = bytes32(keccak256(abi.encodePacked(msg.sender)));
-
-        votantes[chairperson].weight = 1;
+        uint256 id_ = uint256(keccak256(abi.encodePacked(msg.sender)));
+        Votacion memory votacionTest;
+        votacionTest.id = id_;
+        votacionTest.name = name;
+        votacionTest.candidatos = candidatos;
+        votaciones.push(votacionTest);
+        // votantes[chairperson].weight = 1;
         // 'Proposal({...})' creates a temporary
         // Proposal object and 'proposals.push(...)'
         // appends it to the end of 'proposals'.
+    }
+
+    event FCalled(Votacion _a);
+
+    function showAllVotaciones() public {
         for (uint256 i = 0; i < votaciones.length; i++) {
-            votaciones.push(
-                Votacion({id: id_, name: name, candidatos: candidatos})
-            );
+            emit FCalled(votaciones[i]);
         }
     }
+    // function getData()
+    //     external
+    //     view
+    //     returns (bytes32 name, bytes32[] memory candidatos)
+    // {
+    //     for (uint256 i = 0; i < votaciones.length;  {
+    //         Votacion memory votacion = votaciones[i];
+    //         votacion.name = name;
+    //         votacion.candidatos = candidatos;
 
-    function getData() external view returns (Votacion[] memory) {
-        return votaciones;
-    }
+    //         return (name, candidatos);
+    //     }
+    // }
 
-    /**
-     * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
-     * @param candidatos data de la votacion
-     */
-    function getVotacion(bytes32 votacionHash)
-        public
-        view
-        returns (bytes32[] memory candidatos)
-    {
-        for (uint256 i = 0; i < votaciones.length; i++) {
-            if (votaciones[i].id == votacionHash) {
-                Votacion storage sender = votaciones[i];
+    // /**
+    //  * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
+    //  * @param candidatos data de la votacion
+    //  */
+    // function getVotacion(bytes32 votacionHash)
+    //     public
+    //     view
+    //     returns (bytes32[] memory candidatos)
+    // {
+    //     for (uint256 i = 0; i < votaciones.length; i++) {
+    //         if (votaciones[i].id == votacionHash) {
+    //             Votacion storage sender = votaciones[i];
 
-                candidatos = sender.candidatos;
-            }
-        }
+    //             candidatos = sender.candidatos;
+    //         }
+    //     }
 
-        return (candidatos);
-    }
+    //     return (candidatos);
+    // }
 
     // /**
     //  * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
@@ -89,10 +106,10 @@ contract Urnas {
     //     votantes[votante].weight = 1;
     // }
 
-    // /**
-    //  * @dev Give your vote (including votes delegated to you) to proposal 'proposals[proposal].name'.
-    //  * @param votacion index of proposal in the proposals array
-    //  */
+    /**
+     * @dev Give your vote (including votes delegated to you) to proposal 'proposals[proposal].name'.
+     * @param votacion index of proposal in the proposals array
+     */
 
     // function vote(bytes32[] calldata votacion, uint256 weight) public {
     //     Votante storage sender = votantes[msg.sender];
