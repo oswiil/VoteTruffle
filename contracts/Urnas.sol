@@ -14,9 +14,9 @@ contract Urnas {
     }
 
     struct Votante {
+        uint256 weight; // vote value
         address addres; // adress wallet
         bytes32[] voted; // id de votacion + if true, that person already voted
-        uint256 weight; // vote value
     }
 
     struct Votacion {
@@ -29,35 +29,45 @@ contract Urnas {
 
     address public chairperson;
     mapping(address => Votante) public votantes;
-    mapping(uint256 => Votacion) votacionById;
-    Votacion[] public votaciones;
+    mapping(address => Votacion) public votaciones;
+
+    // Votacion[] public votaciones;
 
     /**
      * @dev Return the list of options of the porposal.
-     * @param name name of porposal
-     * @param candidatos name of porposal
+     * @param _name name of porposal
+     * @param _candidatos name of porposal
      */
-    function crearVotacion(bytes32 name, bytes32[] memory candidatos) public {
+    function crearVotacion(bytes32 _name, bytes32[] memory _candidatos) public {
         chairperson = msg.sender;
-        uint256 id_ = uint256(keccak256(abi.encodePacked(msg.sender)));
-        Votacion memory votacionTest;
-        votacionTest.id = id_;
-        votacionTest.name = name;
-        votacionTest.candidatos = candidatos;
-        votaciones.push(votacionTest);
+        uint256 _id = uint256(keccak256(abi.encodePacked(msg.sender)));
+        votaciones[msg.sender].id = _id;
+        votaciones[msg.sender].name = _name;
+        votaciones[msg.sender].candidatos = _candidatos;
+
         // votantes[chairperson].weight = 1;
         // 'Proposal({...})' creates a temporary
         // Proposal object and 'proposals.push(...)'
         // appends it to the end of 'proposals'.
     }
 
-    event FCalled(Votacion _a);
-
-    function showAllVotaciones() public {
-        for (uint256 i = 0; i < votaciones.length; i++) {
-            emit FCalled(votaciones[i]);
-        }
+    function showAllVotaciones() public view returns (Votacion memory) {
+        return votaciones[msg.sender];
     }
+
+    // function vote(uint proposal) public {
+    //     Votante storage sender = votantes[msg.sender];
+    //     require(sender.weight != 0, "Has no right to vote");
+    //     require(!sender.voted, "Already voted.");
+    //     sender.voted = true;
+    //     sender.vote = proposal;
+
+    //     // If 'proposal' is out of the range of the array,
+    //     // this will throw automatically and revert all
+    //     // changes.
+    //     proposals[proposal].voteCount += sender.weight;
+    // }
+
     // function getData()
     //     external
     //     view
