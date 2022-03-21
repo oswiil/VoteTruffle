@@ -30,6 +30,7 @@ export const RenderVotes = () => {
     async function fetchData() {
       try {
         _candidatos = await getVotaciones();
+
         if (_candidatos.length != 0) {
           setVotaciones(_candidatos);
         }
@@ -37,13 +38,14 @@ export const RenderVotes = () => {
         console.log(err);
       }
     }
-    fetchData();
+    fetchData().then(
+      console.log(
+        '🚀 ~ file: Vote.js ~ line 29 ~ RenderVotes ~ votaciones',
+        votaciones
+      )
+    );
   }, []);
 
-  console.log(
-    '🚀 ~ file: Vote.js ~ line 29 ~ RenderVotes ~ votaciones',
-    votaciones
-  );
   return (
     <div>
       {votaciones.map((votacion) => (
