@@ -27,6 +27,7 @@ import { selectDebate } from '../selectors';
 import { crearVotacio } from '../API_smartContract/votar';
 
 let votacion = [];
+let id = 0;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,11 +111,12 @@ export default function Steps() {
   const handleClick = async (candidatos) => {
     /**votacion = [nombre, votecount, select, selectDebate];
     if (!list.filter(nombre).length > 0) list.push({ votacion });**/
-
+    id++;
     setList(list);
     //setName('');
     setLoading(true);
-    await crearVotacio(nombre, candidatos);
+
+    await crearVotacio(id, nombre, candidatos);
     setLoading(false);
   };
   return (
