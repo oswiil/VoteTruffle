@@ -28,22 +28,29 @@ contract Urnas {
     }
 
     address public chairperson;
+    uint256 randNonce = 0;
     mapping(address => Votante) public votantes;
-    mapping(address => Votacion) public votaciones;
+    // mapping(address => Votacion) public votaciones;
+    mapping(uint256 => Votacion) public votaciones;
+    uint256[] ids;
 
     // Votacion[] public votaciones;
 
     /**
      * @dev Return the list of options of the porposal.
+     * @param _id id of porposal
      * @param _name name of porposal
      * @param _candidatos name of porposal
      */
-    function crearVotacion(bytes32 _name, bytes32[] memory _candidatos) public {
-        chairperson = msg.sender;
-        uint256 _id = uint256(keccak256(abi.encodePacked(msg.sender)));
-        votaciones[msg.sender].id = _id;
-        votaciones[msg.sender].name = _name;
-        votaciones[msg.sender].candidatos = _candidatos;
+    function crearVotacion(
+        uint256 _id,
+        bytes32 _name,
+        bytes32[] memory _candidatos
+    ) public {
+        votaciones[_id].id = _id;
+        votaciones[_id].name = _name;
+        votaciones[_id].candidatos = _candidatos;
+        ids.push(_id);
 
         // votantes[chairperson].weight = 1;
         // 'Proposal({...})' creates a temporary
@@ -51,8 +58,12 @@ contract Urnas {
         // appends it to the end of 'proposals'.
     }
 
-    function showAllVotaciones() public view returns (Votacion memory) {
-        return votaciones[msg.sender];
+    function showVotacion(uint256 _id) public view returns (Votacion memory) {
+        return votaciones[_id];
+    }
+
+    function showIds() public view returns (uint256[] memory id) {
+        return ids;
     }
 
     // function vote(uint proposal) public {
