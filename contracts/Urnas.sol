@@ -33,6 +33,9 @@ contract Urnas {
     // mapping(address => Votacion) public votaciones;
     mapping(uint256 => Votacion) public votaciones;
     uint256[] ids;
+    Votacion[] proposals;
+
+    // Votacion[] proposals;
 
     // Votacion[] public votaciones;
 
@@ -51,6 +54,9 @@ contract Urnas {
         votaciones[_id].name = _name;
         votaciones[_id].candidatos = _candidatos;
         ids.push(_id);
+        proposals.push(
+            Votacion({id: _id, name: _name, candidatos: _candidatos})
+        );
 
         // votantes[chairperson].weight = 1;
         // 'Proposal({...})' creates a temporary
@@ -58,9 +64,17 @@ contract Urnas {
         // appends it to the end of 'proposals'.
     }
 
+    // function showVotacion(uint256 _id) public view returns (Votacion memory) {
+    //     return votaciones[_id];
+    // }
+
     function showVotacion(uint256 _id) public view returns (Votacion memory) {
-        return votaciones[_id];
+        return proposals[_id];
     }
+
+    // function showVotaciones() public view returns (Votacion[] memory) {
+    //     return votaciones;
+    // }
 
     function showIds() public view returns (uint256[] memory id) {
         return ids;

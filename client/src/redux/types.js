@@ -6,4 +6,5 @@ export const ADD_ACCOUNTS = 'ADD_ACCOUNTS';
 export const ADD_CONTRACT = 'ADD_CONTRACT';
 export const ADD_VOTACION = 'ADD_VOTACION';
 export const ADD_VOTO = 'ADD_VOTO';
+export const ADD_INDEX = 'ADD_INDEX';
 export const ADD_Web3 = 'ADD_Web3';

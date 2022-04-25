@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import JoinVote from './pages/JoinVotePage';
 // import './styles.css';
 import MarkEmailReadIcon from '@material-ui/icons/MarkunreadMailbox';
+import VotePage from './pages/VotePage';
 const Title = 'Ethereum Web Polls';
 // @tailwind base;
 // @tailwind components;
@@ -53,6 +54,14 @@ export default (theme) => {
             render={() => (
               <Layout>
                 <JoinVote />
+              </Layout>
+            )}
+          />
+          <Route
+            path="/votar"
+            render={() => (
+              <Layout>
+                <VotePage />
               </Layout>
             )}
           />

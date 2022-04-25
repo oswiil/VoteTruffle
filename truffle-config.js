@@ -6,8 +6,12 @@ module.exports = {
   contracts_build_directory: path.join(__dirname, 'client/src/contracts'),
   networks: {
     develop: {
+      host: '127.0.0.1',
       port: 8545,
       defaultEtherBalance: 500000,
+      network_id: '*',
+      websockets: true,
+      chainId: 1337,
     },
   },
   compilers: {

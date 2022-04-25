@@ -6,6 +6,7 @@ import {
   ADD_CONTRACT,
   ADD_ACCOUNTS,
   ADD_VOTACION,
+  ADD_INDEX,
   ADD_Web3,
 } from './types';
 
@@ -35,5 +36,12 @@ export const addWeb3 = (web3) => {
   return {
     type: ADD_Web3,
     data: web3,
+  };
+};
+
+export const addIndex = (index) => {
+  return {
+    type: ADD_INDEX,
+    data: index,
   };
 };

@@ -7,10 +7,11 @@ import {
   ADD_CONTRACT,
   ADD_VOTACION,
   ADD_VOTO,
+  ADD_INDEX,
   ADD_Web3,
 } from './types';
 
-const initialState = {};
+const initialState = { index: 0 };
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_NOMBRE:
@@ -35,6 +36,9 @@ export default function (state = initialState, action) {
       return { ...state, votacion: action.data };
     case ADD_VOTO:
       return { ...state, voto: action.data };
+
+    case ADD_INDEX:
+      return { ...state, index: action.data };
 
     case ADD_Web3:
       return { ...state, web3: action.data };

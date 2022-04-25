@@ -1,10 +1,10 @@
 import React from 'react';
 import '../App.css';
-import Vote from '../components/Vote';
-const VotePage = () => (
+import RadioButtonChoice from '../components/delegateVote';
+const VotePage = ({ children }) => (
   <article id="About">
     <div className="children">{children}</div>
-    <Vote />
+    <RadioButtonChoice />
   </article>
 );
 

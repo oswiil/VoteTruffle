@@ -26,6 +26,7 @@ export default function Router() {
             </Layout>
           )}
         />
+
         <Route
           path="/votar"
           render={() => (

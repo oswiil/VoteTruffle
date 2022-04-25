@@ -18,13 +18,15 @@ import Debate from './Debate';
 import NombreVotacion from './NombreVotacion';
 
 //REDUX
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { selectDebate } from '../selectors';
 
 //CONTRACT FUNCTIONS
 
-import { crearVotacio } from '../API_smartContract/votar';
+import { crearVotacio, getIds } from '../API_smartContract/votar';
+import { addIndex } from '../redux/actions';
+import { ListItem } from '@material-ui/core';
 
 let votacion = [];
 let id = 0;
@@ -78,7 +80,8 @@ function getStepContent(stepIndex) {
 
 export default function Steps() {
   const [list, setList] = React.useState(votacion);
-
+  const index = useSelector((state) => state.index);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -111,14 +114,23 @@ export default function Steps() {
   const handleClick = async (candidatos) => {
     /**votacion = [nombre, votecount, select, selectDebate];
     if (!list.filter(nombre).length > 0) list.push({ votacion });**/
-    id++;
+
     setList(list);
     //setName('');
     setLoading(true);
-
+    let totalVotaciones = await getIds();
+    let id = totalVotaciones.length;
+    console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', id);
+    console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', nombre);
+    console.log(
+      '🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id',
+      candidatos
+    );
     await crearVotacio(id, nombre, candidatos);
+
     setLoading(false);
   };
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -128,7 +140,7 @@ export default function Steps() {
           </Step>
         ))}
       </Stepper>
-      {loading && <Spinner />}
+
       <>
         {activeStep === steps.length ? (
           <>
