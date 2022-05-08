@@ -4,12 +4,12 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import CardMedia from '@material-ui/core/CardMedia';
 import Web3 from 'web3';
-import { getIds, getVotacion } from '../API_smartContract/votar';
+import { getIds, getVotacion, getNames } from '../API_smartContract/votar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import CardContent from '@material-ui/core/CardContent';
 import { addVotacion } from '../redux/actions';
 import Spinner from './Spinner';
@@ -18,12 +18,14 @@ let __index = 0;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexGrow: 1,
     padding: theme.spacing(2),
+    maxWidth: '100%',
   },
   details: {
-    display: 'flex',
-    flexDirection: 'column',
+    height: '55%',
+    width: '25%',
+    margin: '2%',
+    display: 'inline-block',
   },
   content: {
     flex: '1 0 auto',
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export const RenderVotes = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { idVotacion } = useParams();
   const [loading, setLoading] = React.useState(false);
   const classes = useStyles();
   const theme = useTheme();
@@ -72,12 +75,19 @@ export const RenderVotes = () => {
           proposalData.candidatos.forEach((candidato) =>
             _candidatos.push(Web3.utils.hexToAscii(candidato))
           );
+
+          console.log(
+            '🚀 ~ file: Vote.js ~ line 79 ~ handleClick= ~ proposalData.id',
+            proposalData.id
+          );
+          // idVotacion = proposalData.id;
           proposalData.candidatos = _candidatos;
+          // idVotacion = proposalData.id;
           setVotacionData(proposalData);
           //Votacion => Redux
           add_Votacion(proposalData);
           //Router things
-          history.push('/votar');
+          history.push(`/votar/${proposalData.id}`);
         }
       } catch (err) {
         console.log(err);
@@ -98,10 +108,6 @@ export const RenderVotes = () => {
 
         if (proposal.length != 0) {
           setVotaciones(proposal);
-          console.log(
-            '🚀 ~ file: Vote.js ~ line 94 ~ fetchData ~ proposal',
-            proposal
-          );
         }
         setLoading(false);
       } catch (err) {
@@ -110,11 +116,33 @@ export const RenderVotes = () => {
       return proposal;
     }
 
-    fetchData().then((result) => result.forEach((elem) => setNombre(elem)));
+    fetchData().then((result) => result.forEach((elem) => setId(elem)));
 
     console.log(__index);
   }, []);
 
+  React.useEffect(() => {
+    setLoading(true);
+
+    async function fetchNames() {
+      try {
+        isExecutable = true;
+        proposal = await getNames();
+
+        if (proposal.length != 0) {
+          setNombre(proposal.map((value) => Web3.utils.hexToAscii(value)));
+        }
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+      return proposal;
+    }
+
+    fetchNames();
+  }, []);
+  console.log('n', nombre);
+  console.log('v', votaciones);
   return (
     <div>
       {loading ? (
@@ -122,27 +150,30 @@ export const RenderVotes = () => {
       ) : (
         <>
           {votaciones.map((votacion, index) => (
-            <div>
-              <Grid spacing={1} direction="row">
-                <Card className={classes.root}>
-                  <CardActionArea
-                    onClick={(event) => {
-                      handleClick(index);
-                    }}
-                  >
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {votacion}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      ></Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
+            <div className={classes.details} spacing={1}>
+              <Card className={classes.root}>
+                <CardActionArea
+                  onClick={(event) => {
+                    handleClick(index);
+                  }}
+                >
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {votacion}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {' '}
+                      {nombre[index] !== undefined
+                        ? nombre[index].replaceAll('\u0000', '')
+                        : ''}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
             </div>
           ))}
         </>

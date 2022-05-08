@@ -7,7 +7,6 @@ const JoinVote = ({ children }) => (
   <div>
     <div className="children">
       {children}
-      <InsertLink />
       <RenderVotes />
     </div>
   </div>

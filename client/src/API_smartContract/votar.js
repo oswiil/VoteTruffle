@@ -34,9 +34,9 @@ export async function crearVotacio(id, nombre, candidatos) {
 }
 
 export async function getVotacion(id) {
+  console.log('🚀 ~ file: votar.js ~ line 37 ~ getVotacion ~ id', id);
   const { web3, contract, accounts } = await init();
   const idVotacion = Web3.utils.hexToNumber(id);
-
   const d = contract.methods.showVotacion(idVotacion).call({
     from: accounts[0],
     gasPrice: '21000000000',
@@ -59,6 +59,30 @@ export async function getIds() {
   return d;
 }
 
+export async function getNames() {
+  const { web3, contract, accounts } = await init();
+  const d = contract.methods.showNames().call({
+    from: accounts[0],
+    gasPrice: '21000000000',
+    gas: 250000,
+    chainId: 1337,
+    networkId: 1,
+  });
+  return d;
+}
+
+export async function voteProposal(idVotacion, weigth) {
+  const { web3, contract, accounts } = await init();
+  const _idVotacion = web3.utils.numberToHex(idVotacion);
+  const _weigth = web3.utils.numberToHex(weigth);
+  await contract.methods.vote(_idVotacion, _weigth).send({
+    from: accounts[0],
+    gasPrice: '21000000000',
+    gas: 650000,
+    chainId: 1337,
+    networkId: 1,
+  });
+}
 /**
  export async function vote(votacion, opcion) {
   const { contract } = await init();

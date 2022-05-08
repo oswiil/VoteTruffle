@@ -9,10 +9,10 @@ import { createTheme } from '@material-ui/core';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#ff8f00', // This is an orange looking color
+      main: '##b2a0ac', // This is an orange looking color
     },
     secondary: {
-      main: '#ffcc80', //Another orange-ish color
+      main: '##b2a0ac', //Another orange-ish color
     },
   },
 });

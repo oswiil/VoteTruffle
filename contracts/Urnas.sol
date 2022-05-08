@@ -7,16 +7,10 @@ pragma experimental ABIEncoderV2;
  * @dev Implements voting process along with vote delegation
  */
 contract Urnas {
-    struct Voto {
-        address id_Votante; // address candidato
-        bytes32 id_Votacion; // hash votacion
-        int32 weigth; // candidato elegido
-    }
-
     struct Votante {
         uint256 weight; // vote value
         address addres; // adress wallet
-        bytes32[] voted; // id de votacion + if true, that person already voted
+        bool voted; // id de votacion. if true, that person already voted
     }
 
     struct Votacion {
@@ -25,6 +19,7 @@ contract Urnas {
         uint256 id; // hash
         bytes32 name; // short name (up to 32 bytes)
         bytes32[] candidatos; // Array de int
+        uint256 voteCount;
     }
 
     address public chairperson;
@@ -33,6 +28,7 @@ contract Urnas {
     // mapping(address => Votacion) public votaciones;
     mapping(uint256 => Votacion) public votaciones;
     uint256[] ids;
+    bytes32[] names;
     Votacion[] proposals;
 
     // Votacion[] proposals;
@@ -54,8 +50,14 @@ contract Urnas {
         votaciones[_id].name = _name;
         votaciones[_id].candidatos = _candidatos;
         ids.push(_id);
+        names.push(_name);
         proposals.push(
-            Votacion({id: _id, name: _name, candidatos: _candidatos})
+            Votacion({
+                id: _id,
+                name: _name,
+                candidatos: _candidatos,
+                voteCount: 0
+            })
         );
 
         // votantes[chairperson].weight = 1;
@@ -80,18 +82,20 @@ contract Urnas {
         return ids;
     }
 
-    // function vote(uint proposal) public {
-    //     Votante storage sender = votantes[msg.sender];
-    //     require(sender.weight != 0, "Has no right to vote");
-    //     require(!sender.voted, "Already voted.");
-    //     sender.voted = true;
-    //     sender.vote = proposal;
+    function showNames() public view returns (bytes32[] memory name) {
+        return names;
+    }
 
-    //     // If 'proposal' is out of the range of the array,
-    //     // this will throw automatically and revert all
-    //     // changes.
-    //     proposals[proposal].voteCount += sender.weight;
-    // }
+    function vote(uint256 proposal, uint256 weigth) public {
+        Votante storage sender = votantes[msg.sender];
+        sender.voted = true;
+        sender.weight = weigth;
+
+        // If 'proposal' is out of the range of the array,
+        // this will throw automatically and revert all
+        // changes.
+        proposals[proposal].voteCount += sender.weight;
+    }
 
     // function getData()
     //     external

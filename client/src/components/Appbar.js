@@ -26,7 +26,7 @@ import Web3 from 'web3';
 const useStyles = makeStyles({
   connect: {
     marginLeft: 'auto',
-    background: 'linear - gradient(rgba(250, 0, 0, 0.5), transparent)',
+    background: 'orange',
     backgroundColor: 'orange' /*this your primary color*/,
   },
 });
@@ -128,7 +128,12 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        color="#304034"
+        box-shadow="none !important"
+      >
         <Toolbar>
           <IconButton
             color="inherit"

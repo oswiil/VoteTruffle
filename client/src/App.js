@@ -58,7 +58,7 @@ export default (theme) => {
             )}
           />
           <Route
-            path="/votar"
+            path="/votar/:idVotacion"
             render={() => (
               <Layout>
                 <VotePage />
