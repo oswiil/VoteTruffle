@@ -36,6 +36,10 @@ export default function () {
     setName('');
     add_Candidato(initList);
   }
+  function handleReset() {
+    setName('');
+    initList.length = 0;
+  }
   const dispatch = useDispatch();
   const add_Candidato = (candidato) => dispatch(addCandidato(candidato));
 
@@ -51,6 +55,10 @@ export default function () {
 
       <Button variant="contained" onClick={handleAdd}>
         <AddIcon></AddIcon>Añadir
+      </Button>
+
+      <Button variant="contained" onClick={handleReset}>
+        <AddIcon></AddIcon>Reset
       </Button>
       <ul>
         {initList.map((item) => (

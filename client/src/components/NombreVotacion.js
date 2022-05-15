@@ -12,10 +12,14 @@ export default function (nombre, add_Nombre) {
   return (
     <>
       <TextField
+        className=""
         id="outlined-basic"
         label="Descripcion"
         variant="outlined"
         value={nombre}
+        multiline
+        rows={8}
+        defaultValue="Esto es una propuesta"
         onChange={(event) => add_Nombre(event.target.value)}
       />
     </>

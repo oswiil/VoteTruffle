@@ -8,6 +8,7 @@ import JoinVote from './pages/JoinVotePage';
 // import './styles.css';
 import MarkEmailReadIcon from '@material-ui/icons/MarkunreadMailbox';
 import VotePage from './pages/VotePage';
+import { CssBaseline } from '@material-ui/core';
 const Title = 'Ethereum Web Polls';
 // @tailwind base;
 // @tailwind components;
@@ -15,6 +16,7 @@ const Title = 'Ethereum Web Polls';
 export default (theme) => {
   return (
     <div>
+      <CssBaseline />
       <BrowserRouter>
         <Switch>
           <Route

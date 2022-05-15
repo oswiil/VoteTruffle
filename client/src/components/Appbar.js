@@ -26,8 +26,8 @@ import Web3 from 'web3';
 const useStyles = makeStyles({
   connect: {
     marginLeft: 'auto',
-    background: 'orange',
-    backgroundColor: 'orange' /*this your primary color*/,
+    // background: 'orange',
+    // backgroundColor: 'orange' /*this your primary color*/,
   },
 });
 const drawerWidth = 240;
@@ -102,7 +102,7 @@ export default function MiniDrawer() {
   const history = useHistory();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [account, setAccount] = React.useState('');
   const handleDrawerOpen = () => {
     setOpen(true);
     console.log(handleDrawerOpen);
@@ -112,28 +112,28 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const [loading, setLoading] = React.useState(false);
-  const [isConected, setIsConected] = React.useState(false);
-  const dispatch = useDispatch();
-  const initWeb3 = async () => {
-    try {
-      const web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
 
-      Promise.resolve().then(() => initWeb3);
-    } catch (e) {
-      console.log('iu');
+  let user = [];
+  React.useEffect(() => {
+    async function getAccountAdress() {
+      try {
+        user = await init();
+
+        if (user.length != 0) {
+          setAccount(user.accounts);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      return user;
     }
-  };
+
+    getAccountAdress();
+  }, []);
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        open={open}
-        color="#304034"
-        box-shadow="none !important"
-      >
+    <div>
+      <div position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -141,7 +141,6 @@ export default function MiniDrawer() {
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: '36px',
               ...(open && { display: 'none' }),
             }}
           >
@@ -150,17 +149,21 @@ export default function MiniDrawer() {
           <Typography variant="h6" noWrap component="div">
             Dashboard
           </Typography>
+          <Typography variant="h8" noWrap className={classes.connect}>
+            address: {account}
+          </Typography>
           <Button
             className={classes.connect}
             aria-controls="customized-menu"
             aria-haspopup="true"
             variant="contained"
-            onClick={initWeb3}
+            // onClick={initWeb3}
           >
             Conectar
           </Button>
         </Toolbar>
-      </AppBar>
+      </div>
+
       <Drawer variant="contained" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -197,6 +200,6 @@ export default function MiniDrawer() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
       </Box>
-    </Box>
+    </div>
   );
 }

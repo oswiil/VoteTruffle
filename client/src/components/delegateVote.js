@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import { selectNombre, selectVotacion } from '../selectors';
+import { selectDebate, selectNombre, selectVotacion } from '../selectors';
 import { useSelector } from 'react-redux';
 import { ButtonGroup, Card } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -25,6 +25,7 @@ export default function RadioButtonChoice() {
   const [votacion, setVotacion] = React.useState([]);
   const [nombre, setNombre] = React.useState([]);
   const [candidatos, setCandidatos] = React.useState([]);
+  const [debate, setDebate] = React.useState([]);
   const params = history.location.pathname;
   // params.get();
   let proposalData = [];
@@ -47,11 +48,13 @@ export default function RadioButtonChoice() {
           );
           proposalData.candidatos = _candidatos;
           // idVotacion = proposalData.id;
+          proposalData.debate = Web3.utils.hexToAscii(proposalData.debate);
 
           setLoading(false);
           setVotacion(proposalData);
           setNombre(proposalData.name.replaceAll('\u0000', ''));
           setCandidatos(proposalData.candidatos);
+          setDebate(proposalData.debate);
         }
       } catch (err) {
         console.log(err);
@@ -110,9 +113,10 @@ export default function RadioButtonChoice() {
               <ArrowBackIcon onClick={() => history.goBack()} />
             </Button>
             <Card>
+              <h1>{nombre}</h1>
               <form onSubmit={handleClick(value)}>
                 <FormControl sx={{ m: 3 }} error={error} variant="standard">
-                  <FormLabel id="demo-error-radios">{nombre}</FormLabel>
+                  <FormLabel>{debate}</FormLabel>
                   <RadioGroup
                     aria-labelledby="demo-error-radios"
                     name="candidato"

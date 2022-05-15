@@ -149,33 +149,38 @@ export const RenderVotes = () => {
         <Spinner className={classes.root} />
       ) : (
         <>
-          {votaciones.map((votacion, index) => (
-            <div className={classes.details} spacing={1}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  onClick={(event) => {
-                    handleClick(index);
-                  }}
-                >
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {votacion}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {' '}
-                      {nombre[index] !== undefined
-                        ? nombre[index].replaceAll('\u0000', '')
-                        : ''}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </div>
-          ))}
+          {votaciones.length !== 0 ? (
+            votaciones.map((votacion, index) => (
+              <div className={classes.details} spacing={1}>
+                <Card className={classes.root}>
+                  <CardActionArea
+                    onClick={(event) => {
+                      handleClick(index);
+                    }}
+                  >
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {votacion}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {' '}
+                        {nombre[index] !== undefined
+                          ? nombre[index].replaceAll('\u0000', '')
+                          : ''}
+                      </Typography>
+                      <Typography>{votacionData}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </div>
+            ))
+          ) : (
+            <h2>no hay votaciones</h2>
+          )}
         </>
       )}
     </div>

@@ -18,6 +18,7 @@ contract Urnas {
         // always use one of bytes1 to bytes32 because they are much cheaper
         uint256 id; // hash
         bytes32 name; // short name (up to 32 bytes)
+        bytes debate;
         bytes32[] candidatos; // Array de int
         uint256 voteCount;
     }
@@ -44,10 +45,12 @@ contract Urnas {
     function crearVotacion(
         uint256 _id,
         bytes32 _name,
+        bytes memory _debate,
         bytes32[] memory _candidatos
     ) public {
         votaciones[_id].id = _id;
         votaciones[_id].name = _name;
+        votaciones[_id].debate = _debate;
         votaciones[_id].candidatos = _candidatos;
         ids.push(_id);
         names.push(_name);
@@ -55,6 +58,7 @@ contract Urnas {
             Votacion({
                 id: _id,
                 name: _name,
+                debate: _debate,
                 candidatos: _candidatos,
                 voteCount: 0
             })

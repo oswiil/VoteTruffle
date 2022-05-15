@@ -56,22 +56,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return [
-    'Nombre de la votación',
-    'Fecha de publicación',
-    'Debate',
-    'Opciones',
-  ];
+  return ['Nombre de la votación', 'Debate', 'Opciones'];
 }
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
       return <NombreVotacion></NombreVotacion>;
     case 1:
-      return <MaterialUIPickers />;
-    case 2:
       return <Debate></Debate>;
-    case 3:
+    case 2:
       return <InsertarCandidato />;
     default:
       return 'Unknown stepIndex';
@@ -91,13 +84,14 @@ export default function Steps() {
 
   const fecha = useSelector((state) => state.dates);
   const candidatos = useSelector((state) => state.candidatos);
+  const debate = useSelector((state) => state.debate);
 
   const [loading, setLoading] = useState(false);
 
   votacion = useSelector((state) => state.votacion);
 
   const handleNext = () => {
-    if (activeStep !== 4) {
+    if (activeStep !== 3) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
     }
@@ -120,17 +114,17 @@ export default function Steps() {
     setLoading(true);
     let totalVotaciones = await getIds();
     let id = totalVotaciones.length;
-    console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', id);
-    console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', nombre);
-    console.log(
-      '🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id',
-      candidatos
-    );
-    await crearVotacio(id, nombre, candidatos);
+
+    await crearVotacio(id, nombre, debate, candidatos);
 
     setLoading(false);
   };
-
+  console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', id);
+  console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', nombre);
+  console.log(
+    '🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id',
+    candidatos
+  );
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -158,10 +152,7 @@ export default function Steps() {
                 <Typography variant="h5" component="h2">
                   {nombre}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  {fecha}
-                </Typography>
-                <Typography>{selectDebate}</Typography>
+                <Typography>{debate}</Typography>
                 Candidatos
                 {candidatos.map((item) => (
                   <CardActionArea key={item.id}>

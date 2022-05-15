@@ -10,7 +10,7 @@ import Web3 from 'web3';
  * @param {*} nombre
  * @param {*} candidatos
  */
-export async function crearVotacio(id, nombre, candidatos) {
+export async function crearVotacio(id, nombre, debate, candidatos) {
   const { web3, contract, accounts } = await init();
   const arrayHashCandidatos = [];
   candidatos.forEach((element) => {
@@ -22,6 +22,7 @@ export async function crearVotacio(id, nombre, candidatos) {
     .crearVotacion(
       web3.utils.numberToHex(id),
       web3.utils.asciiToHex(nombre),
+      web3.utils.asciiToHex(debate),
       arrayHashCandidatos
     )
     .send({
