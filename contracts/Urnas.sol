@@ -23,14 +23,23 @@ contract Urnas {
         uint256 voteCount;
     }
 
+    struct Urna {
+        uint256 id; // id votacion
+        uint256 si;
+        uint256 no;
+        uint256 abstencion;
+    }
+
     address public chairperson;
     uint256 randNonce = 0;
+    mapping(uint256 => Urna) public urnas;
     mapping(address => Votante) public votantes;
     // mapping(address => Votacion) public votaciones;
     mapping(uint256 => Votacion) public votaciones;
     uint256[] ids;
     bytes32[] names;
     Votacion[] proposals;
+    Urna[] urna;
 
     // Votacion[] proposals;
 
@@ -94,11 +103,41 @@ contract Urnas {
         Votante storage sender = votantes[msg.sender];
         sender.voted = true;
         sender.weight = weigth;
-
+        urnas[proposal].id = proposal;
+        if (weigth == 0) {
+            urnas[proposal].si += 1;
+            urnas[proposal].no += 0;
+            urnas[proposal].abstencion += 0;
+        } else if (weigth == 1) {
+            urnas[proposal].si += 0;
+            urnas[proposal].no += 1;
+            urnas[proposal].abstencion += 0;
+        } else if (weigth == 2) {
+            urnas[proposal].si += 0;
+            urnas[proposal].no += 0;
+            urnas[proposal].abstencion += 1;
+        }
         // If 'proposal' is out of the range of the array,
         // this will throw automatically and revert all
         // changes.
-        proposals[proposal].voteCount += sender.weight;
+    }
+
+    function getVotes(uint256 proposal)
+        public
+        view
+        returns (Urna memory results_)
+    {
+        return urnas[proposal];
+    }
+
+    function winningProposal() public view returns (uint256 winningProposal_) {
+        uint256 winningVoteCount = 0;
+        for (uint256 v = 0; v < proposals.length; v++) {
+            if (votaciones[v].voteCount > winningVoteCount) {
+                winningVoteCount = votaciones[v].voteCount;
+                winningProposal_ = v;
+            }
+        }
     }
 
     // function getData()
@@ -170,15 +209,6 @@ contract Urnas {
     //  * @dev Computes the winning proposal taking all previous votes into account.
     //  * @return winningProposal_ index of winning proposal in the proposals array
     //  */
-    // function winningProposal() public view returns (uint256 winningProposal_) {
-    //     uint256 winningVoteCount = 0;
-    //     for (uint256 v = 0; v < votaciones.length; v++) {
-    //         if (votaciones[v].voteCount > winningVoteCount) {
-    //             winningVoteCount = votaciones[v].voteCount;
-    //             winningProposal_ = v;
-    //         }
-    //     }
-    // }
 
     // /**
     //  * @dev Calls winningProposal() function to get the index of the winner contained in the proposals array and then

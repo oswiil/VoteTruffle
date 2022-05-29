@@ -9,7 +9,8 @@ import JoinVote from './pages/JoinVotePage';
 import MarkEmailReadIcon from '@material-ui/icons/MarkunreadMailbox';
 import VotePage from './pages/VotePage';
 import { CssBaseline } from '@material-ui/core';
-const Title = 'Ethereum Web Polls';
+import ResultPage from './pages/ResultPage';
+const Title = 'Proyecto DAM_M13_Votaciones';
 // @tailwind base;
 // @tailwind components;
 // @tailwind utilities;
@@ -34,9 +35,13 @@ export default (theme) => {
                       </h1>
                     </figcaption>
                     <p>
-                      In order to use the service you have to make sure{' '}
-                      <a href="">Metamamask Extension</a> is installed in your
-                      browser.
+                      Primero instala la extension de Metamask{' '}
+                      <a
+                        href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+                        target="_blank"
+                      >
+                        Metamamask Extension
+                      </a>
                     </p>
                   </Layout>
                 </div>
@@ -64,6 +69,14 @@ export default (theme) => {
             render={() => (
               <Layout>
                 <VotePage />
+              </Layout>
+            )}
+          />
+          <Route
+            path="/resultados/:idVotacion"
+            render={() => (
+              <Layout>
+                <ResultPage />
               </Layout>
             )}
           />

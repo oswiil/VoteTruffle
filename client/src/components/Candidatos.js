@@ -45,21 +45,21 @@ export default function () {
 
   return (
     <div>
+      <h4>Campo Opcional. Si se quiere elegir candidatos.</h4>
       <TextField
         id="outlined-basic"
-        label="Codigo de votacion"
+        label="Nombre de candidato"
         variant="outlined"
+        style={{ marginTop: 10, width: 700 }}
         value={name}
         onChange={(event) => setName(event.target.value)}
       />
-
-      <Button variant="contained" onClick={handleAdd}>
-        <AddIcon></AddIcon>Añadir
-      </Button>
-
-      <Button variant="contained" onClick={handleReset}>
-        <AddIcon></AddIcon>Reset
-      </Button>
+      <div>
+        <Button onClick={handleAdd}>
+          <AddIcon></AddIcon>Añadir
+        </Button>
+        <Button onClick={handleReset}>Reset</Button>
+      </div>
       <ul>
         {initList.map((item) => (
           <Card className={classes.root} key={item.id}>

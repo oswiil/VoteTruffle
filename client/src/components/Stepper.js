@@ -27,6 +27,7 @@ import { selectDebate } from '../selectors';
 import { crearVotacio, getIds } from '../API_smartContract/votar';
 import { addIndex } from '../redux/actions';
 import { ListItem } from '@material-ui/core';
+import { useHistory } from 'react-router';
 
 let votacion = [];
 let id = 0;
@@ -34,10 +35,11 @@ let id = 0;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    marginTop: '-10px',
   },
   bullet: {
     display: 'inline-block',
-    margin: '0 2px',
+
     transform: 'scale(0.8)',
   },
   title: {
@@ -56,16 +58,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Nombre de la votación', 'Debate', 'Opciones'];
+  return ['Formulario', 'Enviar Votacion', 'Fin'];
 }
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return <NombreVotacion></NombreVotacion>;
-    case 1:
-      return <Debate></Debate>;
-    case 2:
-      return <InsertarCandidato />;
+      return (
+        <div styles={{ marginTop: 60 }}>
+          <NombreVotacion /> <Debate /> <InsertarCandidato />
+        </div>
+      );
     default:
       return 'Unknown stepIndex';
   }
@@ -75,14 +77,13 @@ export default function Steps() {
   const [list, setList] = React.useState(votacion);
   const index = useSelector((state) => state.index);
   const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
-
+  const opciones = ['Si', 'No', 'Abstención'];
   //PARA MOSTRAR DATOS DE VOTACIÓN CON HOOKS
   const nombre = useSelector((state) => state.name);
-
-  const fecha = useSelector((state) => state.dates);
   const candidatos = useSelector((state) => state.candidatos);
   const debate = useSelector((state) => state.debate);
 
@@ -91,7 +92,7 @@ export default function Steps() {
   votacion = useSelector((state) => state.votacion);
 
   const handleNext = () => {
-    if (activeStep !== 3) {
+    if (activeStep !== 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
     }
@@ -105,26 +106,20 @@ export default function Steps() {
     setActiveStep(0);
   };
 
-  const handleClick = async (candidatos) => {
-    /**votacion = [nombre, votecount, select, selectDebate];
-    if (!list.filter(nombre).length > 0) list.push({ votacion });**/
-
+  const handleClick = async () => {
     setList(list);
-    //setName('');
     setLoading(true);
     let totalVotaciones = await getIds();
     let id = totalVotaciones.length;
-
-    await crearVotacio(id, nombre, debate, candidatos);
+    if (candidatos != undefined) {
+      await crearVotacio(id, nombre, debate, candidatos);
+    } else {
+      await crearVotacio(id, nombre, debate, opciones);
+    }
 
     setLoading(false);
   };
-  console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', id);
-  console.log('🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id', nombre);
-  console.log(
-    '🚀 ~ file: Stepper.js ~ line 123 ~ handleClick ~ id',
-    candidatos
-  );
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -136,7 +131,7 @@ export default function Steps() {
       </Stepper>
 
       <>
-        {activeStep === steps.length ? (
+        {activeStep === 1 ? (
           <>
             <Typography className={classes.instructions}>
               Todos los pasos completados
@@ -153,19 +148,25 @@ export default function Steps() {
                   {nombre}
                 </Typography>
                 <Typography>{debate}</Typography>
-                Candidatos
-                {candidatos.map((item) => (
-                  <CardActionArea key={item.id}>
-                    <CardContent>{item}</CardContent>
-                  </CardActionArea>
-                ))}
+
+                {candidatos != undefined
+                  ? candidatos.map((item) => (
+                      <CardActionArea key={item.id}>
+                        <CardContent>{item}</CardContent>
+                      </CardActionArea>
+                    ))
+                  : opciones.map((item) => (
+                      <CardActionArea key={item.id}>
+                        <CardContent>{item}</CardContent>
+                      </CardActionArea>
+                    ))}
               </CardContent>
             </Card>
 
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClick(candidatos)}
+              onClick={() => handleClick()}
             >
               Enviar votación
             </Button>
@@ -183,7 +184,7 @@ export default function Steps() {
                 Back
               </Button>
               <Button variant="contained" color="primary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === steps.length - 1 ? 'Acabar' : 'Siguiente'}
               </Button>
             </>
           </>

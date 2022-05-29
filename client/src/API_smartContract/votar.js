@@ -11,6 +11,10 @@ import Web3 from 'web3';
  * @param {*} candidatos
  */
 export async function crearVotacio(id, nombre, debate, candidatos) {
+  console.log(
+    '🚀 ~ file: votar.js ~ line 14 ~ crearVotacio ~ candidatos',
+    candidatos
+  );
   const { web3, contract, accounts } = await init();
   const arrayHashCandidatos = [];
   candidatos.forEach((element) => {
@@ -84,6 +88,19 @@ export async function voteProposal(idVotacion, weigth) {
     networkId: 1,
   });
 }
+
+export async function getVotesById(id) {
+  const { web3, contract, accounts } = await init();
+  const d = contract.methods.getVotes(id).call({
+    from: accounts[0],
+    gasPrice: '21000000000',
+    gas: 250000,
+    chainId: 1337,
+    networkId: 1,
+  });
+  return d;
+}
+
 /**
  export async function vote(votacion, opcion) {
   const { contract } = await init();

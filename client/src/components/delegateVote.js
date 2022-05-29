@@ -33,6 +33,7 @@ export default function RadioButtonChoice() {
   var regex = /\d+/g;
   var matches = params.match(regex);
   const indx = parseInt(matches[0], 10);
+
   React.useEffect(() => {
     async function fetchNames() {
       setLoading(true);
@@ -75,24 +76,20 @@ export default function RadioButtonChoice() {
     console.log('evvent', event);
   };
 
-  const handleClick = async (index) => {
+  const handleSubmit = async () => {
+    console.log('event', value);
     async function voteGo() {
       try {
-        const proposal = await voteProposal(index);
+        await voteProposal(indx, value);
       } catch (err) {
         console.log(err);
       }
     }
-    voteGo();
+    voteGo().then(history.push(`/resultados/${indx}`));
     console.log('HAS VOTADO');
-  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // if (value === 'best') {
-    //   setHelperText('You got it!');
-    //   setError(false);
+    setHelperText('Has votado!');
+    setError(false);
     // } else if (value === 'worst') {
     //   setHelperText('Sorry, wrong answer!');
     //   setError(true);
@@ -114,34 +111,36 @@ export default function RadioButtonChoice() {
             </Button>
             <Card>
               <h1>{nombre}</h1>
-              <form onSubmit={handleClick(value)}>
-                <FormControl sx={{ m: 3 }} error={error} variant="standard">
-                  <FormLabel>{debate}</FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-error-radios"
-                    name="candidato"
-                    value={value}
-                    onChange={handleRadioChange}
-                  >
-                    {candidatos.map((item, index) => (
-                      <FormControlLabel
-                        value={index}
-                        control={<Radio />}
-                        label={item.replaceAll('\u0000', '')}
-                      />
-                    ))}
+              {/* <form onSubmit={handleClick(value)}> */}
+              <FormControl sx={{ m: 3 }} error={error} variant="standard">
+                <h4>Informacion de la propuesta</h4>
+                <FormLabel>{debate}</FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-error-radios"
+                  name="candidato"
+                  value={value}
+                  onChange={handleRadioChange}
+                >
+                  {candidatos.map((item, index) => (
+                    <FormControlLabel
+                      value={index}
+                      control={<Radio />}
+                      label={item.replaceAll('\u0000', '')}
+                    />
+                  ))}
 
-                    <FormHelperText>{helperText}</FormHelperText>
-                    <Button
-                      sx={{ mt: 1, mr: 1 }}
-                      type="submit"
-                      variant="outlined"
-                    >
-                      VOTE
-                    </Button>
-                  </RadioGroup>
-                </FormControl>
-              </form>
+                  <FormHelperText>{helperText}</FormHelperText>
+                  <Button
+                    sx={{ mt: 1, mr: 1 }}
+                    type="submit"
+                    variant="outlined"
+                    onClick={() => handleSubmit()}
+                  >
+                    VOTE
+                  </Button>
+                </RadioGroup>
+              </FormControl>
+              {/* </form> */}
             </Card>
           </>
         </>

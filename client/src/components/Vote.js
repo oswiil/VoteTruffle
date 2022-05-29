@@ -4,7 +4,12 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import CardMedia from '@material-ui/core/CardMedia';
 import Web3 from 'web3';
-import { getIds, getVotacion, getNames } from '../API_smartContract/votar';
+import {
+  getIds,
+  getVotacion,
+  getNames,
+  getVotesById,
+} from '../API_smartContract/votar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux';
@@ -87,6 +92,11 @@ export const RenderVotes = () => {
           //Votacion => Redux
           add_Votacion(proposalData);
           //Router things
+        }
+        const getVotes = await getVotesById(index);
+        if (getVotes.si > 0 || getVotes.no > 0 || getVotes.abstencion > 0) {
+          history.push(`/resultados/${proposalData.id}`);
+        } else {
           history.push(`/votar/${proposalData.id}`);
         }
       } catch (err) {
@@ -149,6 +159,7 @@ export const RenderVotes = () => {
         <Spinner className={classes.root} />
       ) : (
         <>
+          <h2>Votaciones activas</h2>
           {votaciones.length !== 0 ? (
             votaciones.map((votacion, index) => (
               <div className={classes.details} spacing={1}>

@@ -11,15 +11,18 @@ export default function (nombre, add_Nombre) {
   nombre = useSelector((state) => state.name);
   return (
     <>
+      <h4>Rellenar datos votacion</h4>
       <TextField
         className=""
         id="outlined-basic"
-        label="Descripcion"
+        label="Nombre votacion"
         variant="outlined"
         value={nombre}
-        multiline
-        rows={8}
-        defaultValue="Esto es una propuesta"
+        fullWidth
+        padding="5%"
+        style={{ marginTop: 10, width: 700 }}
+        rows={1}
+        defaultValue="Propuesta 1"
         onChange={(event) => add_Nombre(event.target.value)}
       />
     </>
