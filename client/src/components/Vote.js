@@ -18,6 +18,7 @@ import { Route, useHistory, useParams } from 'react-router-dom';
 import CardContent from '@material-ui/core/CardContent';
 import { addVotacion } from '../redux/actions';
 import Spinner from './Spinner';
+import { init } from '../API_smartContract/contractConstRequirement';
 
 let __index = 0;
 const useStyles = makeStyles((theme) => ({
@@ -93,12 +94,20 @@ export const RenderVotes = () => {
           add_Votacion(proposalData);
           //Router things
         }
+        const { accounts } = await init();
         const getVotes = await getVotesById(index);
-        if (getVotes.si > 0 || getVotes.no > 0 || getVotes.abstencion > 0) {
-          history.push(`/resultados/${proposalData.id}`);
-        } else {
-          history.push(`/votar/${proposalData.id}`);
-        }
+        const bool = getVotes.addresses.some(
+          (element) => element.toUpperCase() == accounts[0].toUpperCase()
+        );
+        bool
+          ? history.push(`/resultados/${proposalData.id}`)
+          : history.push(`/votar/${proposalData.id}`);
+
+        // if (getVotes.si > 0 || getVotes.no > 0 || getVotes.abstencion > 0) {
+        //   history.push(`/resultados/${proposalData.id}`);
+        // } else {
+        //   history.push(`/votar/${proposalData.id}`);
+        // }
       } catch (err) {
         console.log(err);
       }

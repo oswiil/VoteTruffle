@@ -28,6 +28,7 @@ contract Urnas {
         uint256 si;
         uint256 no;
         uint256 abstencion;
+        address[] addresses;
     }
 
     address public chairperson;
@@ -117,6 +118,7 @@ contract Urnas {
             urnas[proposal].no += 0;
             urnas[proposal].abstencion += 1;
         }
+        urnas[proposal].addresses.push(msg.sender);
         // If 'proposal' is out of the range of the array,
         // this will throw automatically and revert all
         // changes.
